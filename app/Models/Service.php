@@ -20,6 +20,9 @@ class Service extends Model
     {
         return $this->hasMany(Comment::class);
     }
+    public function recommendations() {
+        return $this->hasMany(Recommendation::class)->orderByDesc('created_at');
+    }
 
     /**
      * Get the city that owns the Service
@@ -33,5 +36,11 @@ class Service extends Model
 
     public function category() {
         return $this->belongsTo(Category::class);
+    }
+
+    public function avgRating($id) {
+        dd($id);
+        $avg = Service::avg('rating');
+
     }
 }

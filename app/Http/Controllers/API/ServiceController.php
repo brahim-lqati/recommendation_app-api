@@ -5,9 +5,11 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ServiceResource;
 use App\Models\Comment;
+use App\Models\Recommendation;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ServiceController extends Controller
 {
@@ -55,13 +57,21 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        $service = Service::with(['category', 'city', 'comments' => function($query) {
-           $query->orderByDesc('created_at');
-        }])->where('id',$id)->get();
+        // $service = Service::with(['category', 'city', 'recommendations' => function($query) {
+        //   // $query->orderByDesc('created_at');
+        //     DB::table('recommendations')
+        //         ->selectRaw('AVG(rating) as avg')->get();
+                
+        // }])->where('id',$id)->get();
                             
-                            
+        $service = Service::where('id',$id)->first();  
+        if(!$service) {
+            return response([
+                'error' => 'service not found'
+            ], 400);
+        }                
         return response([
-            'service' => ServiceResource::collection($service),
+            'service' => new ServiceResource($service),
             'message' => 'Retreive successfully'
         ],200);
 

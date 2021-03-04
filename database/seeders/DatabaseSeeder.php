@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\Comment;
+use App\Models\Recommendation;
 use App\Models\Service;
 use Illuminate\Database\Seeder;
 
@@ -39,9 +40,15 @@ class DatabaseSeeder extends Seeder
             $service->save();
         });
 
-        Comment::factory()->count(50)->make()->each(function($comment) use ($services) {
-            $comment->service_id = $services->random()->id;
-            $comment->save();
+        // Comment::factory()->count(50)->make()->each(function($comment) use ($services) {
+        //     $comment->service_id = $services->random()->id;
+        //     $comment->save();
+        // });
+
+        
+        Recommendation::factory()->count(50)->make()->each(function($recom) use ($services) {
+            $recom->service_id = $services->random()->id;
+            $recom->save();
         });
     }
 }
